@@ -4,7 +4,11 @@
     "private": true,
     "scripts": {
         "start": "node node_modules/react-native/local-cli/cli.js start",
-        "test": "jest"
+        "test": "jest",
+        "clean": "rm -rf node_modules/ && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/haste-* && rm -rf ios/build && rm -rf android/app/build && rm -f yarn.lock && yarn cache clean && yarn install",
+        "clean-unix": "watchman watch-del-all && npm run clean",
+        "clean-android": "rm -rf android/app/build",
+        "clean-ios": "rm -rf ios/build"
     },
     "dependencies": {
         "react": "16.8.3",
