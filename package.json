@@ -1,0 +1,50 @@
+{
+    "name": "RNTSBoilerplate",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node node_modules/react-native/local-cli/cli.js start",
+        "test": "jest"
+    },
+    "dependencies": {
+        "react": "16.8.3",
+        "react-native": "0.59.8"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.4.4",
+        "@babel/runtime": "^7.4.4",
+        "@types/jest": "^24.0.13",
+        "@types/react": "^16.8.17",
+        "@types/react-native": "^0.57.57",
+        "@types/react-test-renderer": "^16.8.1",
+        "babel-jest": "^24.8.0",
+        "jest": "^24.8.0",
+        "metro-react-native-babel-preset": "^0.54.1",
+        "react-native-testing-library": "^1.7.0",
+        "react-test-renderer": "16.8.3",
+        "ts-jest": "^24.0.2",
+        "tslint": "^5.16.0",
+        "tslint-config-prettier": "^1.18.0",
+        "tslint-eslint-rules": "^5.4.0",
+        "tslint-react": "^4.0.0",
+        "typescript": "^3.4.5"
+    },
+    "jest": {
+        "preset": "react-native",
+        "transform": {
+            "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js",
+            "\\.(ts|tsx)$": "ts-jest"
+        },
+        "globals": {
+            "ts-jest": {
+                "tsConfig": "tsconfig.jest.json"
+            }
+        },
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js"
+        ],
+        "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$"
+    }
+}
