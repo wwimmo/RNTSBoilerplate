@@ -11,7 +11,7 @@ Documentation React Native TypeScript Boilerplate project.
   - [CheatSheet](#cheatsheet)
   - [Installation / Setup](#installation--setup)
   - [Run the project](#run-the-project)
-  - [Projektstruktur](#projektstruktur)
+  - [Project structure](#project-structure)
 - [Android/iOS/UWP OS minimal version requirement](#androidiosuwp-os-minimal-version-requirement)
   - [Android](#android)
   - [iOS](#ios)
@@ -52,7 +52,7 @@ Check [CheatSheet](./Documentation/CHEATSHEET.md) or package.json for some tips&
   - or
   - `react-native start` && open .sln in VS2017 --> Start on local machine
 
-## Projektstruktur
+## Project structure
 
 -   **_android/_**
     -   The native Android project files
