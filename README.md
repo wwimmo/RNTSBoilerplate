@@ -23,20 +23,20 @@ Documentation React Native TypeScript Boilerplate project.
 
 ## Prerequisites
 
-Check [Prerequisites](./Documentation/PREREQUISITES) for detailed information about React-Native installation.
+Check [Prerequisites](./Documentation/PREREQUISITES.md) for detailed information about React-Native installation.
 
 ## Building
 
-Check [Building](./Documentation/BUILDING) for detailed information about building executables
+Check [Building](./Documentation/BUILDING.md) for detailed information about building executables
 
 ## CheatSheet
 
-Check [CheatSheet](./Documentation/CHEATSHEET) or package.json for some tips&tricks
+Check [CheatSheet](./Documentation/CHEATSHEET.md) or package.json for some tips&tricks
 
 ## Installation / Setup
 
 - Clone the project
-- Make sure you have [Prerequisites](./Documentation/PREREQUISITES) installed
+- Make sure you have [Prerequisites](./Documentation/PREREQUISITES.md) installed
 - `cd Path/To/Project`
 - `yarn`
 
