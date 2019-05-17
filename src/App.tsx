@@ -2,16 +2,45 @@ import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View, AppStateStatus } from "react-native";
 import { configure } from "mobx";
 import { Provider } from "mobx-react";
+import { withNamespaces } from "react-i18next";
 import * as RNLanguages from "react-native-localize";
 import DeviceInfo from "react-native-device-info";
 
 // Our imports
 import stores from "./stores";
+import i18n, { supportedLanguages } from "./lang/i18n";
+
+// Enforce Observable changes over MobxActions
+configure({ enforceActions: "always" });
 
 const instructions = Platform.select({
     ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
     android: "Double tap R on your keyboard to reload,\n" + "Shake or press menu button for dev menu"
 });
+
+// const i18nWrappedNavigator = ({ t }: { t: any }) => {
+//     return (
+//         <Navigator
+//             screenProps={{ t }}
+//             ref={(navigatorRef: any) => {
+//                 NavigationService.setTopLevelNavigator(navigatorRef);
+//                 stores.uiStore.setNavigator(navigatorRef);
+//             }}
+//             onNavigationStateChange={onNavStateChanged}
+//         />
+//     );
+// };
+
+// const onNavStateChanged = (prevState: any, currentState: any) => {
+//     // stores.uiStore.onNavigationStateChange(currentState);
+// };
+
+// // When we call i18n.changeLanguage(...) the App should automatically reload in the language we changed to
+// const ReloadAppOnLanguageChangeWrappedI18nNavigator = withNamespaces("i18n", {
+//     wait: true,
+//     bindI18n: "languageChanged",
+//     bindStore: "false"
+// })(i18nWrappedNavigator);
 
 interface Props {}
 export default class App extends Component<Props> {
@@ -55,11 +84,13 @@ export default class App extends Component<Props> {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>Welcome to React Native!</Text>
-                <Text style={styles.instructions}>To get started, edit App.tsx</Text>
-                <Text style={styles.instructions}>{instructions}</Text>
-            </View>
+            <Provider {...stores}>
+                <View style={styles.container}>
+                    <Text style={styles.welcome}>Welcome to React Native!</Text>
+                    <Text style={styles.instructions}>To get started, edit App.tsx</Text>
+                    <Text style={styles.instructions}>{instructions}</Text>
+                </View>
+            </Provider>
         );
     }
 }

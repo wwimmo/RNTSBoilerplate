@@ -26,7 +26,7 @@
         "mobx-react": "^5.4.3",
         "react": "16.8.3",
         "react-apollo": "^2.5.5",
-        "react-i18next": "^10.9.0",
+        "react-i18next": "^9.0.10",
         "react-native": "^0.59.8",
         "react-native-device-info": "^1.8.0",
         "react-native-gesture-handler": "^1.2.1",
