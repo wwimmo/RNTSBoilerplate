@@ -15,14 +15,10 @@ class CommonStore {
     isLandscapeOrientation: boolean = false;
     isTablet: boolean = false;
     isOnline: boolean = true;
-    isSyncing: boolean = true;
-    isSearchOpen: boolean = false;
     isKeyboardOpen: boolean = false;
     appState: AppStateStatus = "active";
-    hasQueuedRequests: boolean = true;
     windowHeight?: number = 0;
     windowWidth?: number = 0;
-    searchQuery?: string = "";
 
     constructor() {
         this.addConnectivityListener();
@@ -45,16 +41,6 @@ class CommonStore {
         this.windowWidth = width;
     };
 
-    // Maybe we can change this to a computed later?
-    setIsSyncing = (isSyncing: boolean) => {
-        this.isSyncing = isSyncing;
-    };
-
-    // Maybe we can change this to a computed later?
-    setHasQueuedRequests = (hasQueuedRequests: boolean) => {
-        this.hasQueuedRequests = hasQueuedRequests;
-    };
-
     setAppState = (newAppState: AppStateStatus) => {
         this.appState = newAppState;
     };
@@ -63,16 +49,8 @@ class CommonStore {
         this.isTablet = isTablet;
     };
 
-    setIsSearchOpen = (isSearchOpen: boolean) => {
-        this.isSearchOpen = isSearchOpen;
-    };
-
     setIsKeyboardOpen = (isKeyboardOpen: boolean) => {
         this.isKeyboardOpen = isKeyboardOpen;
-    };
-
-    setSearchQuery = (newSearchQuery: string) => {
-        this.searchQuery = newSearchQuery;
     };
 
     // Helper Methods
@@ -80,7 +58,8 @@ class CommonStore {
         if (!this.hasConnectivityListenerRegistered) {
             NetInfo.isConnected.addEventListener(EVENT_NAME, this.setIsOnline);
             this.hasConnectivityListenerRegistered = true;
-            Platform.OS === "windows" ? this.setIsOnline(await NetInfo.isConnected.fetch()) : undefined;
+
+            // Platform.OS === "windows" ? this.setIsOnline(await NetInfo.isConnected.fetch()) : undefined;
         }
     };
 
@@ -94,11 +73,11 @@ class CommonStore {
 
     async addLanguageChangeListener(callback: () => void) {
         if (!this.hasLanguageChangeListenerRegistered) {
-            if (Platform.OS !== "windows") {
-                // The library (and window uwp itself) doesn't support listening to language changes
-                RNLanguages!.addEventListener("change", callback);
-                this.hasLanguageChangeListenerRegistered = true;
-            }
+            // if (Platform.OS !== "windows") {
+            // The library (and window uwp itself) doesn't support listening to language changes
+            RNLanguages!.addEventListener("change", callback);
+            this.hasLanguageChangeListenerRegistered = true;
+            // }
         }
     }
 
@@ -168,25 +147,17 @@ class CommonStore {
 decorate(CommonStore, {
     isOnline: observable,
     isLandscapeOrientation: observable,
-    isSyncing: observable,
     isTablet: observable,
-    isSearchOpen: observable,
     isKeyboardOpen: observable,
-    hasQueuedRequests: observable,
     appState: observable,
     windowHeight: observable,
     windowWidth: observable,
-    searchQuery: observable,
     setIsOnline: action,
     setIsLandscapeOrientation: action,
-    setIsSyncing: action,
     setIsTablet: action,
-    setIsSearchOpen: action,
     setIsKeyboardOpen: action,
-    setHasQueuedRequests: action,
     setWindowDimensions: action,
-    setAppState: action,
-    setSearchQuery: action
+    setAppState: action
 });
 
 export default CommonStore;
