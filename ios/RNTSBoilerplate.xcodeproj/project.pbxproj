@@ -63,6 +63,9 @@
 		84C6DF10F05C4AF8AAF0444C /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8C3C1D2F8474109BB0E8367 /* libRNDeviceInfo.a */; };
 		0FD52E6ADAAB40E0B40DCE17 /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82E27792B7EF47F9984B0D93 /* libRNDeviceInfo-tvOS.a */; };
 		0CD5D379BA934E2790F08FBD /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA45A60664EA41FB930FB5B1 /* libRNFS.a */; };
+		F80088B937B1421C8DF356FD /* libRNCNetInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4CE1E23CFB64D05A33003E5 /* libRNCNetInfo.a */; };
+		9092102C01A5471091EB8007 /* libRNCNetInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 387451DCF7AD45809D7B0152 /* libRNCNetInfo-tvOS.a */; };
+		A24748480F104F668AE19A27 /* libRNCAsyncStorage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AA6DA6145D34A689A10776E /* libRNCAsyncStorage.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -427,6 +430,11 @@
 		82E27792B7EF47F9984B0D93 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo-tvOS.a"; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		F4F5D4800CB44640A0B694D0 /* RNFS.xcodeproj */ = {isa = PBXFileReference; name = "RNFS.xcodeproj"; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		FA45A60664EA41FB930FB5B1 /* libRNFS.a */ = {isa = PBXFileReference; name = "libRNFS.a"; path = "libRNFS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		3D707425D0054A31B6A80017 /* RNCNetInfo.xcodeproj */ = {isa = PBXFileReference; name = "RNCNetInfo.xcodeproj"; path = "../node_modules/@react-native-community/netinfo/ios/RNCNetInfo.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		A4CE1E23CFB64D05A33003E5 /* libRNCNetInfo.a */ = {isa = PBXFileReference; name = "libRNCNetInfo.a"; path = "libRNCNetInfo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		387451DCF7AD45809D7B0152 /* libRNCNetInfo-tvOS.a */ = {isa = PBXFileReference; name = "libRNCNetInfo-tvOS.a"; path = "libRNCNetInfo-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		43247B81A1F64506AE8C19C0 /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; name = "RNCAsyncStorage.xcodeproj"; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		9AA6DA6145D34A689A10776E /* libRNCAsyncStorage.a */ = {isa = PBXFileReference; name = "libRNCAsyncStorage.a"; path = "libRNCAsyncStorage.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -460,6 +468,8 @@
 				8C620C1B6D024B5C92914961 /* libRNLocalize.a in Frameworks */,
 				84C6DF10F05C4AF8AAF0444C /* libRNDeviceInfo.a in Frameworks */,
 				0CD5D379BA934E2790F08FBD /* libRNFS.a in Frameworks */,
+				F80088B937B1421C8DF356FD /* libRNCNetInfo.a in Frameworks */,
+				A24748480F104F668AE19A27 /* libRNCAsyncStorage.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +490,7 @@
 				F46E00AA66B34C35B06E25AC /* libRNVectorIcons-tvOS.a in Frameworks */,
 				ACB0E519E7A64D9BBE3F9A21 /* libRNLocalize-tvOS.a in Frameworks */,
 				0FD52E6ADAAB40E0B40DCE17 /* libRNDeviceInfo-tvOS.a in Frameworks */,
+				9092102C01A5471091EB8007 /* libRNCNetInfo-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -680,6 +691,8 @@
 				EA8BC9F68DF2426F9CCBB4BC /* RNLocalize.xcodeproj */,
 				F544F66D8828485A93A9957C /* RNDeviceInfo.xcodeproj */,
 				F4F5D4800CB44640A0B694D0 /* RNFS.xcodeproj */,
+				3D707425D0054A31B6A80017 /* RNCNetInfo.xcodeproj */,
+				43247B81A1F64506AE8C19C0 /* RNCAsyncStorage.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1385,12 +1398,17 @@
 					"$(SRCROOT)/../node_modules/react-native-localize/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 				INFOPLIST_FILE = RNTSBoilerplateTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1423,12 +1441,17 @@
 					"$(SRCROOT)/../node_modules/react-native-localize/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 				INFOPLIST_FILE = RNTSBoilerplateTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1462,6 +1485,8 @@
 					"$(SRCROOT)/../node_modules/react-native-localize/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 				INFOPLIST_FILE = RNTSBoilerplate/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1488,6 +1513,8 @@
 					"$(SRCROOT)/../node_modules/react-native-localize/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 				INFOPLIST_FILE = RNTSBoilerplate/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1521,11 +1548,16 @@
 					"$(SRCROOT)/../node_modules/react-native-localize/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 				INFOPLIST_FILE = "RNTSBoilerplate-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1567,11 +1599,16 @@
 					"$(SRCROOT)/../node_modules/react-native-localize/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 				INFOPLIST_FILE = "RNTSBoilerplate-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1612,11 +1649,16 @@
 					"$(SRCROOT)/../node_modules/react-native-localize/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 				INFOPLIST_FILE = "RNTSBoilerplate-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1657,11 +1699,16 @@
 					"$(SRCROOT)/../node_modules/react-native-localize/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
+					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 				);
 				INFOPLIST_FILE = "RNTSBoilerplate-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
