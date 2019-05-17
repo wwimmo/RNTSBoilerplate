@@ -1,9 +1,7 @@
 import { decorate, observable, action } from "mobx";
-import { NetInfo, Platform, Dimensions, AppState, AppStateStatus, Keyboard } from "react-native";
+import { Platform, Dimensions, AppState, AppStateStatus, Keyboard } from "react-native";
+import NetInfo from "@react-native-community/netinfo";
 import * as RNLanguages from "react-native-localize";
-
-// RN-Windows NetInfo implementation is stale and uses nowadays deprecated apis/namings
-const EVENT_NAME = Platform.OS === "windows" ? "change" : "connectionChange";
 
 class CommonStore {
     private hasConnectivityListenerRegistered: boolean = false;
@@ -56,10 +54,8 @@ class CommonStore {
     // Helper Methods
     addConnectivityListener = async () => {
         if (!this.hasConnectivityListenerRegistered) {
-            NetInfo.isConnected.addEventListener(EVENT_NAME, this.setIsOnline);
+            NetInfo.isConnected.addEventListener("connectionChange", this.setIsOnline);
             this.hasConnectivityListenerRegistered = true;
-
-            // Platform.OS === "windows" ? this.setIsOnline(await NetInfo.isConnected.fetch()) : undefined;
         }
     };
 
@@ -73,11 +69,8 @@ class CommonStore {
 
     async addLanguageChangeListener(callback: () => void) {
         if (!this.hasLanguageChangeListenerRegistered) {
-            // if (Platform.OS !== "windows") {
-            // The library (and window uwp itself) doesn't support listening to language changes
             RNLanguages!.addEventListener("change", callback);
             this.hasLanguageChangeListenerRegistered = true;
-            // }
         }
     }
 
@@ -98,7 +91,7 @@ class CommonStore {
 
     removeConnectivityListener = () => {
         if (this.hasConnectivityListenerRegistered) {
-            NetInfo.isConnected.removeEventListener(EVENT_NAME, this.setIsOnline);
+            NetInfo.isConnected.removeEventListener("connectionChange", this.setIsOnline);
             this.hasConnectivityListenerRegistered = false;
         }
     };
@@ -112,11 +105,9 @@ class CommonStore {
 
     removeLanguagesChangeListener(callback: () => void) {
         if (this.hasLanguageChangeListenerRegistered) {
-            if (Platform.OS !== "windows") {
-                // The library (and window uwp itself) doesn't support listening to language changes
-                RNLanguages!.removeEventListener("change", callback);
-                this.hasLanguageChangeListenerRegistered = false;
-            }
+            // The library (and window uwp itself) doesn't support listening to language changes
+            RNLanguages!.removeEventListener("change", callback);
+            this.hasLanguageChangeListenerRegistered = false;
         }
     }
 

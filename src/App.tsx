@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Platform, StyleSheet, Text, View, AppStateStatus } from "react-native";
+import { StyleSheet, View, AppStateStatus } from "react-native";
 import { configure } from "mobx";
 import { Provider } from "mobx-react";
+import { Provider as PaperProvider } from "react-native-paper";
 import { withNamespaces } from "react-i18next";
 import * as RNLanguages from "react-native-localize";
 import DeviceInfo from "react-native-device-info";
@@ -18,6 +19,7 @@ import { apolloCache, apolloClient } from "./utils/storage/ApolloInit";
 import NavigationService from "./utils/NavigationService";
 import { restorePendingMutations } from "./components/apollo/OfflineMutation";
 import AppContainer from "./navigation/NavigationConfiguration";
+import { Theme } from "./styles/theme";
 
 // Enforce Observable changes over MobxActions
 configure({ enforceActions: "always" });
@@ -95,11 +97,13 @@ class App extends Component<Props> {
     render() {
         return (
             <ApolloProvider client={apolloClient}>
-                <Provider {...stores}>
-                    <View style={styles.pageContainer}>
-                        <ReloadAppOnLanguageChangeWrappedI18nNavigator />
-                    </View>
-                </Provider>
+                <PaperProvider theme={Theme}>
+                    <Provider {...stores}>
+                        <View style={styles.pageContainer}>
+                            <ReloadAppOnLanguageChangeWrappedI18nNavigator />
+                        </View>
+                    </Provider>
+                </PaperProvider>
             </ApolloProvider>
         );
     }

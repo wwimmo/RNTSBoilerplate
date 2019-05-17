@@ -1,5 +1,5 @@
 import React from "react";
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import { Mutation } from "react-apollo";
 
 // Pull serialized mutations from AsyncStorage
