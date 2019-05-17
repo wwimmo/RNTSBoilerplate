@@ -14,6 +14,8 @@
 
 ## 1. Native SDK Requirements
 
+Please Cross-Check with [Getting Started --> React Native CLI Quickstart](https://facebook.github.io/react-native/docs/getting-started)
+
 ### iOS (OSX only)
 
 -   XCode (App store or official Apple Website)
