@@ -1,7 +1,6 @@
 # README
 
 Documentation React Native TypeScript Boilerplate project. 
-Check [CheatSheet](./Documentation/CHEATSHEET).  
 
 # Table of Contents
 - [README](#readme)
