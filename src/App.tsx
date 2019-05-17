@@ -9,47 +9,45 @@ import { persistCache } from "apollo-cache-persist";
 import { ApolloProvider } from "react-apollo";
 import { NormalizedCacheObject } from "apollo-cache-inmemory";
 import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
+import FSStorage, { DocumentDir } from "redux-persist-fs-storage";
 
 // Our imports
 import stores from "./stores";
 import i18n, { supportedLanguages } from "./lang/i18n";
 import { apolloCache, apolloClient } from "./utils/storage/ApolloInit";
+import NavigationService from "./utils/NavigationService";
 import { restorePendingMutations } from "./components/apollo/OfflineMutation";
+import AppContainer from "./navigation/NavigationConfiguration";
 
 // Enforce Observable changes over MobxActions
 configure({ enforceActions: "always" });
 
-const instructions = Platform.select({
-    ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
-    android: "Double tap R on your keyboard to reload,\n" + "Shake or press menu button for dev menu"
-});
+const i18nWrappedNavigator = ({ t }: { t: any }) => {
+    return (
+        <AppContainer
+            screenProps={{ t }}
+            ref={(navigatorRef: any) => {
+                NavigationService.setTopLevelNavigator(navigatorRef);
+                stores.navStore.setNavigator(navigatorRef);
+            }}
+            onNavigationStateChange={onNavStateChanged}
+        />
+    );
+};
 
-// const i18nWrappedNavigator = ({ t }: { t: any }) => {
-//     return (
-//         <Navigator
-//             screenProps={{ t }}
-//             ref={(navigatorRef: any) => {
-//                 NavigationService.setTopLevelNavigator(navigatorRef);
-//                 stores.uiStore.setNavigator(navigatorRef);
-//             }}
-//             onNavigationStateChange={onNavStateChanged}
-//         />
-//     );
-// };
+const onNavStateChanged = (prevState: any, currentState: any) => {
+    stores.navStore.onNavigationStateChange(currentState);
+};
 
-// const onNavStateChanged = (prevState: any, currentState: any) => {
-//     // stores.uiStore.onNavigationStateChange(currentState);
-// };
-
-// // When we call i18n.changeLanguage(...) the App should automatically reload in the language we changed to
-// const ReloadAppOnLanguageChangeWrappedI18nNavigator = withNamespaces("i18n", {
-//     wait: true,
-//     bindI18n: "languageChanged",
-//     bindStore: "false"
-// })(i18nWrappedNavigator);
+// When we call i18n.changeLanguage(...) the App should automatically reload in the language we changed to
+const ReloadAppOnLanguageChangeWrappedI18nNavigator = withNamespaces("i18n", {
+    wait: true,
+    bindI18n: "languageChanged",
+    bindStore: "false"
+})(i18nWrappedNavigator);
 
 interface Props {}
-export default class App extends Component<Props> {
+class App extends Component<Props> {
     componentDidMount() {
         stores.commonStore.setIsTablet(DeviceInfo.isTablet());
         stores.commonStore.addConnectivityListener();
@@ -78,9 +76,7 @@ export default class App extends Component<Props> {
         if (stores.commonStore.appState.match(/inactive|background/) && newAppState === "active") {
             await persistCache({
                 cache: apolloCache,
-                storage: FSStorage(DocumentDir, `${stores.authStore.username}`) as PersistentStorage<
-                    PersistedData<NormalizedCacheObject>
-                >,
+                storage: FSStorage(DocumentDir, `myApp`) as PersistentStorage<PersistedData<NormalizedCacheObject>>,
                 debug: true
             });
             restorePendingMutations(apolloClient);
@@ -90,20 +86,18 @@ export default class App extends Component<Props> {
     };
 
     resumeAfterLanguageChangeIfPossible = async () => {
-        // await stores.uiStore.rehydrate();
-        // if (!stores.uiStore.shouldResumeAtNavState) {
-        //     NavigationService.navigateToApp();
-        // }
+        await stores.navStore.rehydrate();
+        if (!stores.navStore.shouldResumeAtNavState) {
+            NavigationService.navigateToStart();
+        }
     };
 
     render() {
         return (
             <ApolloProvider client={apolloClient}>
                 <Provider {...stores}>
-                    <View style={styles.container}>
-                        <Text style={styles.welcome}>Welcome to React Native!</Text>
-                        <Text style={styles.instructions}>To get started, edit App.tsx</Text>
-                        <Text style={styles.instructions}>{instructions}</Text>
+                    <View style={styles.pageContainer}>
+                        <ReloadAppOnLanguageChangeWrappedI18nNavigator />
                     </View>
                 </Provider>
             </ApolloProvider>
@@ -112,20 +106,9 @@ export default class App extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#F5FCFF"
-    },
-    welcome: {
-        fontSize: 20,
-        textAlign: "center",
-        margin: 10
-    },
-    instructions: {
-        textAlign: "center",
-        color: "#333333",
-        marginBottom: 5
+    pageContainer: {
+        flex: 1
     }
 });
+
+export default App;
