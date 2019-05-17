@@ -5,10 +5,16 @@ import { Provider } from "mobx-react";
 import { withNamespaces } from "react-i18next";
 import * as RNLanguages from "react-native-localize";
 import DeviceInfo from "react-native-device-info";
+import { persistCache } from "apollo-cache-persist";
+import { ApolloProvider } from "react-apollo";
+import { NormalizedCacheObject } from "apollo-cache-inmemory";
+import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
 
 // Our imports
 import stores from "./stores";
 import i18n, { supportedLanguages } from "./lang/i18n";
+import { apolloCache, apolloClient } from "./utils/storage/ApolloInit";
+import { restorePendingMutations } from "./components/apollo/OfflineMutation";
 
 // Enforce Observable changes over MobxActions
 configure({ enforceActions: "always" });
@@ -70,6 +76,14 @@ export default class App extends Component<Props> {
 
     onAppStateChanged = async (newAppState: AppStateStatus) => {
         if (stores.commonStore.appState.match(/inactive|background/) && newAppState === "active") {
+            await persistCache({
+                cache: apolloCache,
+                storage: FSStorage(DocumentDir, `${stores.authStore.username}`) as PersistentStorage<
+                    PersistedData<NormalizedCacheObject>
+                >,
+                debug: true
+            });
+            restorePendingMutations(apolloClient);
         } else if (stores.commonStore.appState === "active" && newAppState.match(/inactive|background/)) {
         }
         stores.commonStore.setAppState(newAppState);
@@ -84,13 +98,15 @@ export default class App extends Component<Props> {
 
     render() {
         return (
-            <Provider {...stores}>
-                <View style={styles.container}>
-                    <Text style={styles.welcome}>Welcome to React Native!</Text>
-                    <Text style={styles.instructions}>To get started, edit App.tsx</Text>
-                    <Text style={styles.instructions}>{instructions}</Text>
-                </View>
-            </Provider>
+            <ApolloProvider client={apolloClient}>
+                <Provider {...stores}>
+                    <View style={styles.container}>
+                        <Text style={styles.welcome}>Welcome to React Native!</Text>
+                        <Text style={styles.instructions}>To get started, edit App.tsx</Text>
+                        <Text style={styles.instructions}>{instructions}</Text>
+                    </View>
+                </Provider>
+            </ApolloProvider>
         );
     }
 }
