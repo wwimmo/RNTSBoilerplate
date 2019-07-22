@@ -1,22 +1,20 @@
 {
-  "compilerOptions": {
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "jsx": "react",
-    "lib": ["es6"],
-    "moduleResolution": "node",
-    "noEmit": true,
-    "strict": true,
-    "target": "esnext",
-
-    "resolveJsonModule": true
-  },
-  "exclude": [
-    "node_modules",
-    "babel.config.js",
-    "metro.config.js",
-    "jest.config.js"
-  ]
+    "compilerOptions": {
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "isolatedModules": true,
+        "jsx": "react",
+        "lib": ["es6"],
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "noEmit": true,
+        "strict": true,
+        "noUnusedLocals": true,
+        "importHelpers": true,
+        "skipLibCheck": true,
+        "target": "esnext",
+        "resolveJsonModule": true
+    },
+    "exclude": ["node_modules", "babel.config.js", "metro.config.js", "jest.config.js", "Documentation"]
 }

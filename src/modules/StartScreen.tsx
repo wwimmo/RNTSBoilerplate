@@ -6,35 +6,34 @@ import { withNamespaces } from "react-i18next";
 import { compose } from "recompose";
 
 import { ComponentInputPropsDefault } from "../types";
-import { NavStore, CommonStore } from "../stores";
 
 const instructions = Platform.select({
     ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
     android: "Double tap R on your keyboard to reload,\n" + "Shake or press menu button for dev menu"
 });
 
-type Props = ComponentInputPropsDefault & {
-    navStore: NavStore;
-    commonStore: CommonStore;
-};
+type Props = ComponentInputPropsDefault;
 
 class StartScreen extends React.Component<Props, {}> {
     render() {
-        const { i18n: trans, commonStore, navStore } = this.props;
+        const { i18n: trans, rootStore } = this.props;
         return (
             <View style={styles.container}>
                 <Text style={styles.welcome}>Welcome to React Native!</Text>
                 <Text style={styles.instructions}>To get started, edit StartScreen.tsx</Text>
                 <Text style={[styles.instructions, { marginBottom: 16 }]}>{instructions}</Text>
                 <Text style={styles.instructions}>
-                    isLandscapeOrientation: {commonStore.isLandscapeOrientation ? "true" : "false"}
+                    isLandscapeOrientation: {rootStore.commonStore.isLandscapeOrientation ? "true" : "false"}
                 </Text>
-                <Text style={styles.instructions}>isTablet: {commonStore.isTablet ? "true" : "false"}</Text>
-                <Text style={styles.instructions}>isOnline: {commonStore.isOnline ? "true" : "false"}</Text>
-                <Text style={styles.instructions}>isKeyboardOpen: {commonStore.isKeyboardOpen ? "true" : "false"}</Text>
-                <Text style={styles.instructions}>AppState: {commonStore.appState}</Text>
+                <Text style={styles.instructions}>isTablet: {rootStore.commonStore.isTablet ? "true" : "false"}</Text>
+                <Text style={styles.instructions}>isOnline: {rootStore.commonStore.isOnline ? "true" : "false"}</Text>
                 <Text style={styles.instructions}>
-                    ActiveRouteName: {navStore.activeRouteName ? navStore.activeRouteName : "Not set yet"}
+                    isKeyboardOpen: {rootStore.commonStore.isKeyboardOpen ? "true" : "false"}
+                </Text>
+                <Text style={styles.instructions}>AppState: {rootStore.commonStore.appState}</Text>
+                <Text style={styles.instructions}>
+                    ActiveRouteName:{" "}
+                    {rootStore.navStore.activeRouteName ? rootStore.navStore.activeRouteName : "Not set yet"}
                 </Text>
                 <Text style={styles.instructions}>i18Next localized string to: {trans.t("general:someString")}</Text>
             </View>
@@ -44,7 +43,7 @@ class StartScreen extends React.Component<Props, {}> {
 
 export default compose(
     withNamespaces(["general", "i18n"], { wait: true }),
-    inject("navStore", "commonStore"),
+    inject("rootStore"),
     observer
 )(StartScreen);
 

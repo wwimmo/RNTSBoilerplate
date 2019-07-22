@@ -3,11 +3,17 @@ import NavigationService from "../utils/NavigationService";
 import RouteNames from "../navigation/RouteNames";
 import Constants from "../utils/Constants";
 import AsyncStorageWrapper from "../utils/storage/AsyncStorageWrapper";
+import RootStore from "./RootStore";
 
 class NavStore {
     navState: any;
     navigator: any;
     shouldResumeAtNavState: boolean = false;
+    rootStore: RootStore;
+
+    constructor(rootStore: RootStore) {
+        this.rootStore = rootStore;
+    }
 
     // Hydration/Rehydration
     async rehydrate() {

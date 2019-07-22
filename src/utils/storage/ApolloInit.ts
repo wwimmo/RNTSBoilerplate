@@ -7,13 +7,11 @@ import { ApolloLink, from } from "apollo-link";
 
 // Insert accessToken to requests
 // const authMiddlewareLink = new ApolloLink((operation, forward) => {
-//     if (stores.authStore.accessToken) {
-//         operation.setContext({
-//             headers: {
-//                 authorization: `${stores.authStore.tokenType} ${stores.authStore.accessToken}`
-//             }
-//         });
-//     }
+//     operation.setContext({
+//         headers: {
+//             authorization: `${stores.rootStore.authStore.tokenType} ${stores.rootStore.authStore.accessToken}`
+//         }
+//     });
 //     return forward(operation);
 // });
 
@@ -23,24 +21,37 @@ const httpLink = ApolloLink.from([
         if (graphQLErrors) {
             for (let err of graphQLErrors) {
                 // switch (err.extensions.code) {
-                //     case "UNAUTHENTICATED": // ReAuthorize, set new access token and retry request
-                //         const oldHeaders = operation.getContext().headers;
-                //         if (stores.authStore.username) {
-                //             stores.authStore.executeAuthorize().then((success) => {
-                //                 if (success && stores.authStore.accessToken) {
-                //                     operation.setContext({
-                //                         headers: {
-                //                             ...oldHeaders,
-                //                             authorization: `${stores.authStore.tokenType} ${
-                //                                 stores.authStore.accessToken
-                //                             }`
+                //     case "invalid-jwt":
+                //     case "invalid-headers":
+                //         if (stores.rootStore.authStore.username) {
+                //             return new Observable((observer) => {
+                //                 stores.rootStore.authStore
+                //                     .executeAuthorize()
+                //                     .then((success) => {
+                //                         if (success && stores.rootStore.authStore.accessToken) {
+                //                             operation.setContext(({ headers = {} }) => ({
+                //                                 headers: {
+                //                                     ...headers,
+                //                                     authorization: `${stores.rootStore.authStore.tokenType} ${
+                //                                         stores.rootStore.authStore.accessToken
+                //                                     }`
+                //                                 }
+                //                             }));
+                //                         } else {
+                //                             NavigationService.navigateToLogout();
                 //                         }
+                //                     })
+                //                     .then(() => {
+                //                         const subscriber = {
+                //                             next: observer.next.bind(observer),
+                //                             error: observer.error.bind(observer),
+                //                             complete: observer.complete.bind(observer)
+                //                         };
+                //                         forward(operation).subscribe(subscriber);
+                //                     })
+                //                     .catch((error) => {
+                //                         observer.error(error);
                 //                     });
-                //                     // retry the request, returning the new observable
-                //                     return forward(operation);
-                //                 } else {
-                //                     NavigationService.navigateToLogout();
-                //                 }
                 //             });
                 //         } else {
                 //             NavigationService.navigateToLogout();
@@ -54,8 +65,8 @@ const httpLink = ApolloLink.from([
         }
     }),
     new HttpLink({
-        uri: "graphqlEndpoint",
-        credentials: "same-origin"
+        uri: "yourGraphqlEndpoint",
+        credentials: "include"
     })
 ]);
 
@@ -67,20 +78,22 @@ const apolloLink = from([retryLink, httpLink]);
 //     dataIdFromObject: (object) => {
 //         switch (object.__typename) {
 //             default:
-//                 if (object.s_id) {
-//                     return `${object.__typename}:${object.s_id}`;
+//                 if (object.id) {
+//                     return `${object.__typename}:${object.id}`;
 //                 } else {
 //                     return defaultDataIdFromObject(object);
 //                 }
 //         }
-//     }
+//     },
+//     freezeResults: true
 // });
 
 const apolloCache = new InMemoryCache();
 
 const apolloClient = new ApolloClient({
     link: apolloLink,
-    cache: apolloCache
+    cache: apolloCache,
+    assumeImmutableResults: true
 });
 
 export { apolloCache, apolloClient };

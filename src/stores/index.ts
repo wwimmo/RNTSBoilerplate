@@ -1,13 +1,10 @@
-import CommonStore from "./CommonStore";
-import NavStore from "./NavStore";
+import RootStore from "./RootStore";
 
 // instantiate stores here
-const commonStore = new CommonStore();
-const navStore = new NavStore();
+const rootStore = new RootStore();
 
 export default {
-    commonStore,
-    navStore
+    rootStore
 };
 
 export { default as CommonStore } from "./CommonStore";

@@ -7,7 +7,7 @@ const execSync = require("child_process").execSync;
 const arg = `--header="Authorization: Bearer ${process.argv[2]}"` || `--header="No Header Provided"`;
 
 execSync(
-    "apollo client:download-schema --endpoint http://wwhasuratest.westeurope.azurecontainer.io/v1/graphql schema.json " +
+    "apollo client:download-schema --endpoint http://wwdevhasura.westeurope.azurecontainer.io/v1/graphql schema.json " +
         arg,
     { stdio: [0, 1, 2] }
 );

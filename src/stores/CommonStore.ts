@@ -1,7 +1,15 @@
-import { decorate, observable, action } from "mobx";
-import { Platform, Dimensions, AppState, AppStateStatus, Keyboard } from "react-native";
+import { decorate, observable, action, computed } from "mobx";
+import { Dimensions, AppState, AppStateStatus, Keyboard } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
 import * as RNLanguages from "react-native-localize";
+import FSStorage, { DocumentDir } from "redux-persist-fs-storage";
+import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
+import { NormalizedCacheObject } from "apollo-cache-inmemory";
+import { persistCache } from "apollo-cache-persist";
+
+import RootStore from "./RootStore";
+import OfflineMutationHelper from "../utils/OfflineMutationHelper";
+import { apolloCache, apolloClient } from "../utils/storage/ApolloInit";
 
 class CommonStore {
     private hasConnectivityListenerRegistered: boolean = false;
@@ -10,22 +18,38 @@ class CommonStore {
     private hasAppStateChangeListenerRegistered: boolean = false;
     private hasKeyboardListenerRegistered: boolean = false;
 
+    pendingMutations: any[] = [];
     isLandscapeOrientation: boolean = false;
     isTablet: boolean = false;
     isOnline: boolean = true;
+    isSyncing: boolean = false;
     isKeyboardOpen: boolean = false;
     appState: AppStateStatus = "active";
     windowHeight?: number = 0;
     windowWidth?: number = 0;
+    rootStore: RootStore;
 
-    constructor() {
+    private pendingMutationsPersistKey = "@PendingMutations:";
+
+    constructor(rootStore: RootStore) {
+        this.rootStore = rootStore;
         this.addConnectivityListener();
         this.addOrientationListener();
     }
 
     // MobX Actions
+    setPendingMutations(pendingMutations: any) {
+        this.pendingMutations = pendingMutations;
+    }
+
+    addPendingMutation(pendingMutation: any) {
+        OfflineMutationHelper.addPendingMutation(pendingMutation);
+        this.pendingMutations.push(pendingMutation);
+    }
+
     setIsOnline = (isOnline: boolean) => {
         this.isOnline = isOnline;
+        // Maybe restorePendingMutations ?
     };
 
     setIsLandscapeOrientation = () => {
@@ -39,6 +63,10 @@ class CommonStore {
         this.windowWidth = width;
     };
 
+    setIsSyncing = (isSyncing: boolean) => {
+        this.isSyncing = isSyncing;
+    };
+
     setAppState = (newAppState: AppStateStatus) => {
         this.appState = newAppState;
     };
@@ -50,6 +78,18 @@ class CommonStore {
     setIsKeyboardOpen = (isKeyboardOpen: boolean) => {
         this.isKeyboardOpen = isKeyboardOpen;
     };
+
+    // Computeds
+    get hasQueuedRequests(): boolean {
+        return this.pendingMutations.length > 0;
+    }
+
+    get pendingMutationsPersistKeyPrefix(): string {
+        // if (this.rootStore.authStore.username) {
+        //     return `${this.pendingMutationsPersistKey}@${this.rootStore.authStore.username}:`;
+        // }
+        return `${this.pendingMutationsPersistKey}`;
+    }
 
     // Helper Methods
     addConnectivityListener = async () => {
@@ -133,22 +173,47 @@ class CommonStore {
     handleKeyboardDidHide = () => {
         this.setIsKeyboardOpen(false);
     };
+
+    async persistCacheAndRestoreMutations() {
+        await persistCache({
+            cache: apolloCache,
+            storage: FSStorage(DocumentDir, `myApp`) as PersistentStorage<PersistedData<NormalizedCacheObject>>,
+            debug: true
+        });
+        await this.restorePendingMutations();
+    }
+
+    async restorePendingMutations() {
+        const pendingMutations = await OfflineMutationHelper.getPendingMutations();
+        if (pendingMutations.length > 0) {
+            this.setIsSyncing(true);
+        }
+        await OfflineMutationHelper.restorePendingMutations(apolloClient);
+        this.setIsSyncing(false);
+    }
 }
 
 decorate(CommonStore, {
+    pendingMutations: observable,
     isOnline: observable,
+    isSyncing: observable,
     isLandscapeOrientation: observable,
     isTablet: observable,
     isKeyboardOpen: observable,
     appState: observable,
     windowHeight: observable,
     windowWidth: observable,
+    setPendingMutations: action,
     setIsOnline: action,
+    setIsSyncing: action,
     setIsLandscapeOrientation: action,
     setIsTablet: action,
     setIsKeyboardOpen: action,
     setWindowDimensions: action,
-    setAppState: action
+    setAppState: action,
+    addPendingMutation: action,
+    hasQueuedRequests: computed,
+    pendingMutationsPersistKeyPrefix: computed
 });
 
 export default CommonStore;

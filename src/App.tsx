@@ -6,18 +6,13 @@ import { Provider as PaperProvider } from "react-native-paper";
 import { withNamespaces } from "react-i18next";
 import * as RNLanguages from "react-native-localize";
 import DeviceInfo from "react-native-device-info";
-import { persistCache } from "apollo-cache-persist";
 import { ApolloProvider } from "react-apollo";
-import { NormalizedCacheObject } from "apollo-cache-inmemory";
-import { PersistentStorage, PersistedData } from "apollo-cache-persist/types";
-import FSStorage, { DocumentDir } from "redux-persist-fs-storage";
 
 // Our imports
 import stores from "./stores";
 import i18n, { supportedLanguages } from "./lang/i18n";
-import { apolloCache, apolloClient } from "./utils/storage/ApolloInit";
+import { apolloClient } from "./utils/storage/ApolloInit";
 import NavigationService from "./utils/NavigationService";
-import { restorePendingMutations } from "./components/apollo/OfflineMutation";
 import AppContainer from "./navigation/NavigationConfiguration";
 import { Theme } from "./styles/theme";
 
@@ -30,7 +25,7 @@ const i18nWrappedNavigator = ({ t }: { t: any }) => {
             screenProps={{ t }}
             ref={(navigatorRef: any) => {
                 NavigationService.setTopLevelNavigator(navigatorRef);
-                stores.navStore.setNavigator(navigatorRef);
+                stores.rootStore.navStore.setNavigator(navigatorRef);
             }}
             onNavigationStateChange={onNavStateChanged}
         />
@@ -38,7 +33,7 @@ const i18nWrappedNavigator = ({ t }: { t: any }) => {
 };
 
 const onNavStateChanged = (prevState: any, currentState: any) => {
-    stores.navStore.onNavigationStateChange(currentState);
+    stores.rootStore.navStore.onNavigationStateChange(currentState);
 };
 
 // When we call i18n.changeLanguage(...) the App should automatically reload in the language we changed to
@@ -51,21 +46,21 @@ const ReloadAppOnLanguageChangeWrappedI18nNavigator = withNamespaces("i18n", {
 interface Props {}
 class App extends Component<Props> {
     componentDidMount() {
-        stores.commonStore.setIsTablet(DeviceInfo.isTablet());
-        stores.commonStore.addConnectivityListener();
-        stores.commonStore.addOrientationListener();
-        stores.commonStore.addKeyboardListener();
-        stores.commonStore.addLanguageChangeListener(this.onLanguagesChanged);
-        stores.commonStore.addAppStateChangeListener(this.onAppStateChanged);
-        this.resumeAfterLanguageChangeIfPossible();
+        stores.rootStore.commonStore.setIsTablet(DeviceInfo.isTablet());
+        stores.rootStore.commonStore.addConnectivityListener();
+        stores.rootStore.commonStore.addOrientationListener();
+        stores.rootStore.commonStore.addKeyboardListener();
+        stores.rootStore.commonStore.addLanguageChangeListener(this.onLanguagesChanged);
+        stores.rootStore.commonStore.addAppStateChangeListener(this.onAppStateChanged);
+        // this.resumeAfterLanguageChangeIfPossible();
     }
 
     componentWillUnmount() {
-        stores.commonStore.removeConnectivityListener();
-        stores.commonStore.removeOrientationListener();
-        stores.commonStore.removeKeyboardListener();
-        stores.commonStore.removeLanguagesChangeListener(this.onLanguagesChanged);
-        stores.commonStore.removeAppStateChangeListener(this.onAppStateChanged);
+        stores.rootStore.commonStore.removeConnectivityListener();
+        stores.rootStore.commonStore.removeOrientationListener();
+        stores.rootStore.commonStore.removeKeyboardListener();
+        stores.rootStore.commonStore.removeLanguagesChangeListener(this.onLanguagesChanged);
+        stores.rootStore.commonStore.removeAppStateChangeListener(this.onAppStateChanged);
     }
 
     onLanguagesChanged = () => {
@@ -75,21 +70,16 @@ class App extends Component<Props> {
     };
 
     onAppStateChanged = async (newAppState: AppStateStatus) => {
-        if (stores.commonStore.appState.match(/inactive|background/) && newAppState === "active") {
-            await persistCache({
-                cache: apolloCache,
-                storage: FSStorage(DocumentDir, `myApp`) as PersistentStorage<PersistedData<NormalizedCacheObject>>,
-                debug: true
-            });
-            restorePendingMutations(apolloClient);
-        } else if (stores.commonStore.appState === "active" && newAppState.match(/inactive|background/)) {
+        if (stores.rootStore.commonStore.appState.match(/inactive|background/) && newAppState === "active") {
+            await stores.rootStore.commonStore.persistCacheAndRestoreMutations();
+        } else if (stores.rootStore.commonStore.appState === "active" && newAppState.match(/inactive|background/)) {
         }
-        stores.commonStore.setAppState(newAppState);
+        stores.rootStore.commonStore.setAppState(newAppState);
     };
 
     resumeAfterLanguageChangeIfPossible = async () => {
-        await stores.navStore.rehydrate();
-        if (!stores.navStore.shouldResumeAtNavState) {
+        await stores.rootStore.navStore.rehydrate();
+        if (!stores.rootStore.navStore.shouldResumeAtNavState) {
             NavigationService.navigateToStart();
         }
     };
