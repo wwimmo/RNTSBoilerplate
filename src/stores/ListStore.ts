@@ -45,17 +45,18 @@ class ListStore {
 
     // actions
     setSearchQuery = (searchQuery: string) => {
-        this.searchQuery = searchQuery.toLowerCase();
+        this.searchQuery = searchQuery;
     };
 
     // Computeds
     get listDataFilteredBySearchQuery(): Developer[] {
         if (this.searchQuery !== "") {
+            const lowerCaseSearchQuery = this.searchQuery.toLowerCase();
             return this.listData.filter((developer) => {
                 return (
-                    developer.name.toLowerCase().includes(this.searchQuery) ||
-                    developer.email.toLowerCase().includes(this.searchQuery) ||
-                    developer.team.toLowerCase().includes(this.searchQuery) ||
+                    developer.name.toLowerCase().includes(lowerCaseSearchQuery) ||
+                    developer.email.toLowerCase().includes(lowerCaseSearchQuery) ||
+                    developer.team.toLowerCase().includes(lowerCaseSearchQuery) ||
                     (!isNaN(parseInt(this.searchQuery, 10)) && developer.age === parseInt(this.searchQuery, 10))
                 );
             });
