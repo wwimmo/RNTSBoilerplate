@@ -1,10 +1,11 @@
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import StartScreen from "../modules/StartScreen";
+import ListSearchScreen from "../modules/ListSearchScreen";
 
 const AppNavigator = createStackNavigator(
     {
         Start: {
-            screen: StartScreen
+            screen: ListSearchScreen
         }
     },
     {
