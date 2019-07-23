@@ -65,7 +65,7 @@ const httpLink = ApolloLink.from([
         }
     }),
     new HttpLink({
-        uri: "yourGraphqlEndpoint",
+        uri: "https://swapi.graph.cool/",
         credentials: "include"
     })
 ]);
